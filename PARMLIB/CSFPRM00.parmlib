@@ -1,0 +1,20 @@
+/*******************************************************************/
+/*     LICENSED MATERIALS - PROPERTY OF IBM                        */
+/*                                                                 */
+/*     5650-ZOS                                                    */
+/*                                                                 */
+/*     COPYRIGHT IBM CORP. 1990, 2013                              */
+/*                                                                 */
+/*  THIS IS A SAMPLE OF THE ICSF OPTIONS DATASET                   */
+/*                                                                 */
+/*******************************************************************/
+CKDSN(CSF.CSFCKDS.NEW)
+PKDSN(CSF.CSFPKDS.NEW)
+TKDSN(CSF.CSFTKDS.NEW)
+DOMAIN(0)
+COMPAT(NO)
+SSM(NO)
+CHECKAUTH(NO)
+CTRACE(CTICSF00)
+USERPARM(USERPARM)
+REASONCODES(ICSF)

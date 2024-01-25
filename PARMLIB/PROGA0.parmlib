@@ -1,0 +1,23 @@
+APF ADD
+    DSNAME(IGY640.SIGYCOMP)                              VOLUME(D5PRD2)
+APF ADD
+    DSNAME(ISM400.SEQABMOD)                              VOLUME(&SYSP1)
+APF ADD
+    DSNAME(ISM400.SEQAAUTH)                              VOLUME(&SYSP1)
+APF ADD
+    DSNAME(GIM.SGIMLMD0)                                 VOLUME(&SYSR1)
+APF ADD
+    DSNAME(FAN140.SEAGLPA)                               VOLUME(&SYSP1)
+APF ADD
+    DSNAME(DIT130.SDITMOD1)                              VOLUME(&SYSP1)
+/*  Begin Ansible Block Insert  */
+/* Colin Paice update FEU.Z25D.PARMLIB(PROGA0)   */
+APF ADD
+    DSNAME(ISM400.SEQAMOD)          VOLUME(&SYSP2)
+APF ADD
+    DSNAME(ISM400.DB2SP.SCEERUN)    SMS
+/*  End Ansible Block Insert */
+/*  Begin APF Ansible block insert */
+APF ADD
+    DSNAME(FEU.SFEUAUTH)  SMS
+/*  End APF Ansible block insert */

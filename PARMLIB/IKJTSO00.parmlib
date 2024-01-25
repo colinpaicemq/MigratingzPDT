@@ -1,0 +1,124 @@
+AUTHCMD NAMES(          /* AUTHORIZED COMMANDS      */      +
+   AD       ADDSD       /* RACF COMMANDS            */ +
+   AG       ADDGROUP    /*                          */ +
+   AU       ADDUSER     /*                          */ +
+   ALG      ALTGROUP    /*                          */ +
+   ALD      ALTDSD      /*                          */ +
+   ALU      ALTUSER     /*                          */ +
+   BLKUPD               /*                          */ +
+   CO       CONNECT     /*                          */ +
+   DD       DELDSD      /*                          */ +
+   DG       DELGROUP    /*                          */ +
+   DU       DELUSER     /*                          */ +
+   LD       LISTDSD     /*                          */ +
+   LG       LISTGRP     /*                          */ +
+   LU       LISTUSER    /*                          */ +
+   RACDCERT             /*                          */ +
+   RALT     RALTER      /*                          */ +
+   RACLINK              /*                          */ +
+   RDEF     RDEFINE     /*                          */ +
+   RDEL     RDELETE     /*                          */ +
+   RE       REMOVE      /*                          */ +
+   RL       RLIST       /*                          */ +
+   RVARY                /*                          */ +
+   PASSWORD PW          /*                          */ +
+   PE       PERMIT      /*                          */ +
+   SETR     SETROPTS    /*                          */ +
+   SR       SEARCH      /*                          */ +
+   IRRDPI00             /*                          */ +
+   DITTO                /* DITTO                    */ +
+   DITTOA               /* DITTO                    */ +
+   DITTOU               /* DITTO                    */ +
+   DELETE               /*                          */ +
+   IEBCOPY              /*                          */ +
+   BINDDATA BDATA       /*  DMSMS COMMANDS          */ +
+   LISTDATA LDATA       /*                          */ +
+   SETCACHE SETC        /*                          */ +
+   RECEIVE              /* TSO COMMANDS             */ +
+   CONSPROF             /*                          */ +
+   TRANSMIT XMIT        /*                          */ +
+   LISTB    LISTBC      /*                          */ +
+   SE       SEND        /*                          */ +
+   RACONVRT CONSPROF    /*                          */ +
+   SYNC                 /*                          */ +
+   LISTD    LISTDS      /*                          */ +
+   TESTAUTH TESTA       /*                          */ +
+   PARMLIB  IKJPRMLB    /*                          */ +
+   NETSTAT              /* IP COMMANDS              */ +
+   PING     LPR         /* COM SERV IP              */ +
+   TRACERTE             /* IP COMMANDS              */ +
+   MVPXDISP            /* IP COMMAND                */)
+                        /*                          */
+AUTHPGM NAMES(          /* AUTHORIZED PROGRAMS      */      +
+   ICHUT100             /*                          */ +
+   ICHUT200             /*                          */ +
+   ICHUT400             /*                          */ +
+   ICHDSM00             /*                          */ +
+   IRRDSC00             /*                          */ +
+   IRRUT100             /*                          */ +
+   IRRUT200             /*                          */ +
+   IRRUT400             /*                          */ +
+   IRRDPI00             /*                          */ +
+   CSFDAUTH           /* ICSF COMMAND             */ +
+   CSFDPKDS             /* COLIN PAICE              */ +
+   ICADCT             /* FIREWALL                 */ +
+   ICADDCT            /* FIREWALL                 */ +
+   ICADCFGS           /* FIREWALL                 */ +
+   ICADPFTP           /* FIREWALL                 */ +
+   ICADFTPD           /* FIREWALL                 */ +
+   ICADSLOG           /* FIREWALL                 */ +
+   ICADSOCK           /* FIREWALL                 */ +
+   ICADSOXD           /* FIREWALL                 */ +
+   ICADSTAK           /* FIREWALL                 */ +
+   ICADIKED           /* FIREWALL                 */ +
+   IEBCOPY              /*                          */ +
+   BLZPASTK             /* RATIONAL TEAM CONERT     */ +
+   IOEGRWAG           /* DFS                      */ +
+   IOENEWAG           /* DFS                      */ +
+   IOESALVG           /* DFS                      */ +
+   IOEBAK             /* DFS                      */ +
+   IOEBOS             /* DFS                      */ +
+   IOECM              /* DFS                      */ +
+   IOEDCEER           /* DFS                      */ +
+   IOEDFSXP           /* DFS                      */ +
+   IOEFTS             /* DFS                      */ +
+   IOEMAPID           /* DFS                      */ +
+   IOESCOUT           /* DFS                      */ +
+   IOEUDBG            /* DFS                      */)
+                        /*                          */
+NOTBKGND NAMES(         /* COMMANDS WHICH MAY NOT BE */  +
+                        /* ISSUED IN THE BACKGROUND  */  +
+   OPER     OPERATOR    /*                           */ +
+   TERM     TERMINAL    /*                           */)
+                        /*                           */
+AUTHTSF NAMES(          /* PROGRAMS TO BE AUTHORIZED */  +
+                        /* WHEN CALLED THROUGH THE   */  +
+                        /* TSO SERVICE FACILITY.     */  +
+   CSFDAUTH             /* ICSF                     */ +
+   CSFDPKDS             /* COLIN PAICE              */ +
+   IEBCOPY              /*                          */ +
+   ICQASLI0             /*                          */ +
+   IKJEFF76             /*                          */)
+                        /*                           */
+SEND                    /* SEND COMMAND DEFAULTS     */  +
+   OPERSEND(ON)         /*                           */ +
+   USERSEND(ON)         /*                           */ +
+   SAVE(ON)             /*                           */ +
+   CHKBROD(OFF)         /*                           */ +
+   LOGNAME(SYS1.BRODCAST)  /*                        */
+ALLOCATE                /* ALLOCATE COMMAND DEFAULT  */ +
+   DEFAULT(OLD)         /*                           */
+TRANSREC                /*                        */ +
+   NODESMF((*,*))       /*                        */ +
+   CIPHER(YES)          /*                           */ +
+   SPOOLCL(B)           /*                           */ +
+   OUTWARN(50000,15000) /*                           */ +
+   OUTLIM(5000000)      /*                           */ +
+   VIO(SYSALLDA)        /*                           */ +
+   LOGSEL(LOG)          /*                           */ +
+   LOGNAME(MISC)        /*                           */ +
+   DAPREFIX(TUPREFIX)   /*                           */ +
+   USRCTL(NAMES.TEXT)   /*                           */ +
+   SYSOUT(*)            /*                           */
+LOGON +
+  PASSPHRASE(ON)

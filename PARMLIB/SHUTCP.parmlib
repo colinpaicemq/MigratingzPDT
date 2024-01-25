@@ -1,0 +1,55 @@
+COMMANDPREFIX=NONE   /* THIS IS THE DEFAULT VALUE */
+/*--------------------------------------------------------------------*/
+/* WARN TSO USERS TO LOGOFF                                           */
+/*--------------------------------------------------------------------*/
+%CSQ9 STOP CHINIT
+%CSQ9 STOP QMGR
+P PAGENT
+C SM3
+c SSHD3
+c GLDSRV
+P TCPIP2
+F TSO,USERMAX=0        /* DON'T ALLOW ANYONE ELSE TO LOGON RIGHT NOW! */
+SEND 'PLEASE LOGOFF - THE SYSTEM WILL BE IPLED IN NOW      !!',ALL,NOW
+PAUSE 10
+/*--------------------------------------------------------------------*/
+/* ISSUE STOP COMMANDS FOR ALL TASKS THAT WILL TAKE THEM.  FOR THOSE  */
+/* THAT WON'T TAKE THEM, SIMPLY ISSUE CANCEL COMMANDS.                */
+/*--------------------------------------------------------------------*/
+/*--------------------------------------------------------------------*/
+/* ISSUE MODIFY COMMANDS FOR THOSE TASKS THAT USE THEM INSTEAD OF STOP*/
+/*--------------------------------------------------------------------*/
+/*--------------------------------------------------------------------*/
+/* TRY TO WAIT LONG ENOUGH FOR ALL TO COME COMPLETELY DOWN            */
+/*--------------------------------------------------------------------*/
+P TSO
+P CSQ9WEB
+P BAQZANGL
+P HZR
+P TCPIP3
+C NFSC
+P NFSS
+C DFSCM
+SETRRS SHUTDOWN
+P LLA
+P CSF
+P VLF
+P HZSPROC
+S HTTPD1,ACTION='stop'
+MODIFY DLF,MODE=Q
+P DLF
+PAUSE 10
+F OMVS,STOPPFS=ZFS
+P TN3270
+P TCPIP
+P SDSF
+PAUSE 10
+SETRRS SHUTDOWN
+C AXR04
+F OMVS,SHUTDOWN
+PAUSE 5
+Z NET,QUICK
+PAUSE 10
+#STOP
+PAUSE 5
+$pjes2,abend

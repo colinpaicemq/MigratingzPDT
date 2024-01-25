@@ -1,0 +1,20 @@
+/********************************************************************/
+/*                                                                  */
+/*              AUTO-REPLY POLICY SPECIFICATIONS                    */
+/********************************************************************/
+/* ADCD TEAM IMPLEMENTED AUTO-REPLY POLICY.                         */
+/*                                                                  */
+/* PLEASE SEE SYS1.PARMLIB(AUTOR00) FOR IBM SUPPLIED DEFAULTS.      */
+/*                                                                  */
+/*                                                                  */
+/********************************************************************/
+/* IEFC166D REPLY Y/N TO EXECUTE/SUPPRESS COMMAND                   */
+/*                                                                  */
+/* RULE: 1                                                          */
+/*                                                                  */
+   MSGID(IEFC166D)   DELAY(2S) REPLY(Y)
+/********************************************************************/
+   MSGID(?HASP098)   DELAY(5S) REPLY(END)
+   MSGID(BPXI078D)   DELAY(2S) REPLY(Y)
+   MSGID(BPXF032D)   DELAY(2S) REPLY(I)
+   MSGID(IKT010D)    DELAY(2S) REPLY(FSTOP)

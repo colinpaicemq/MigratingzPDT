@@ -1,0 +1,362 @@
+/* ---------------------------------------------------------------- */
+/*                                                                  */
+/*   LICENSED MATERIALS - PROPERTY OF IBM                           */
+/*   5694-A01                                                       */
+/*   COPYRIGHT IBM CORP. 2004, 2013                                 */
+/*                                                                  */
+/* Statements in HZSPRMxx parmlib members can be used to:           */
+/* - specify a POLICY to change the default behavior of target      */
+/*   health checks                                                  */
+/* - enable LOGSTREAM processing for an extended check history      */
+/* - specify a data set which allows to persist check data across   */
+/*   IPLs                                                           */
+/*                                                                  */
+/* For a complete syntax of those statements and other commands     */
+/* see the IBM Health Checker for z/OS User's Guide                 */
+/*                                                                  */
+/* ---------------------------------------------------------------- */
+/*                                                                  */
+/* LOGGER=ON,LOGSTREAMNAME=HZSlogstream                             */
+/*                                                                  */
+/*   can be used to enable log stream processing to the specified   */
+/*   log stream                                                     */
+/*                                                                  */
+/*                                                                  */
+/* HZSPDATA=dsnç,VOLUME=volserŸ                                     */
+/*                                                                  */
+/*   can be used to specify a persistent data data set, optionally  */
+/*   qualified by the volume it resides on.                         */
+/*   This is an alternative to the HZSPDATA DD statement in the     */
+/*   HZSPROC procedure used to start Health Checker.                */
+/*                                                                  */
+/* {ADD | ADDREPLACE},POLICY,STATEMENT=statementname,UPDATE,filters,*/
+/*        update_options,REASON=(reason text),DATE=yyyymmdd         */
+/*                                                                  */
+/*   can be used to define policy statements that modify the        */
+/*   behavior of specified checks.                                  */
+/*                                                                  */
+/* Where                                                            */
+/*   ADD -     This is a new policy statement that is not active.   */
+/*             If the named policy statement is already active, the */
+/*             new policy statement is rejected.                    */
+/*   ADDREPLACE - The specified policy statement may already be     */
+/*             active.                                              */
+/*             If the policy statement is already active, the       */
+/*             existing policy statement is replaced.               */
+/*   statementname - 1-16 character policy statement name used to   */
+/*             identify the policy statement.                       */
+/*   UPDATE -  Indicates the policy statement overrides check       */
+/*             defaults                                             */
+/*   filters - Filters that indicate which CHECK(s) are targeted by */
+/*             this policy statement:                               */
+/*             CHECK(owner,name) - (Required.) The 1-6 character    */
+/*                                 check owner, and 1-32 character  */
+/*                                 check name.  Wild card symbols   */
+/*                                 '*' and '%' are permitted.       */
+/*             çCATEGORY(çfilter_type,Ÿ category-1ç,category-2Ÿ...) */
+/*                Allows additional filter capacity based on the    */
+/*                current assigned categories                       */
+/*             çEXITRTN=exitrtnŸ - The name of the HZSADDCHECK      */
+/*                                 dynamic exit routine that was    */
+/*                                 used to add the check.           */
+/*   Update_options- The options used to override the check         */
+/*             defaults:                                            */
+/*             ç,ACTIVE|INACTIVEŸ                                   */
+/*                Indicates the target CHECK(s) are ACTIVE or       */
+/*                INACTIVE.                                         */
+/*             ç,ADDCAT=(cat1,...,cat16)Ÿ                           */
+/*                Add the target CHECK(s) to the specified          */
+/*                categories                                        */
+/*             ç,DESCCODE=(desccode1,...,desccode#)Ÿ                */
+/*                Additional descriptor code(s) which will be used  */
+/*                when an exception message is written by the       */
+/*                target CHECK(s)                                   */
+/*             ç,{INTERVAL=ONETIME|INTERVAL=hhh:mm}Ÿ                */
+/*                The interval at which the target CHECK(s) will    */
+/*                be run.                                           */
+/*             ç,PARM=parameterŸ                                    */
+/*                The check specific parameter that will be passed  */
+/*                to the target check.                              */
+/*             ç,ROUTCODE=(routcode1ç,..,routcode#Ÿ)Ÿ               */
+/*                Additional route code(s) which will be used when  */
+/*                an exception message is written by the target     */
+/*                CHECK(s)                                          */
+/*             ç,SEVERITY={HIGH|MEDIUM|LOW|NONE}Ÿ                   */
+/*                The severity of target CHECK(s)                   */
+/*             ç,WTOTYPE={CRITICAL|EVENTUAL|                        */
+/*                        INFORMATIONAL|HARDCOPY|NONE}Ÿ             */
+/*                Specifies what message will be used when an       */
+/*                exception message is written by the target        */
+/*                CHECK(s). Note: If WTOTYPE is not specified,      */
+/*                the message is determined by the check severity.  */
+/*             ...more (see the User's Guide)                       */
+/*   REASON -  1-126 character reason that documents why the policy */
+/*             statement statement was added to HZSPRMxx.           */
+/*   DATE   -  (yyyymmdd) The date when the policy statement was    */
+/*             added to HZSPRMxx.                                   */
+/*                                                                  */
+/* ---------------------------------------------------------------- */
+/* IIC-Dallas environments                                          */
+/*     Development and test environments do not require             */
+/*     same consideration as prod environments.                     */
+/*     Many of the exceptions below are specific to Dallas only.    */
+/* ---------------------------------------------------------------- */
+/* STOP will shutdown HZSPROC and eliminate Health Checking         */
+/* STOP  */
+/* ---------------------------------------------------------------- */
+ADDREPLACE POLICY STATEMENT(COLIN01)
+UPDATE   CHECK(IBMUSS,USS_HFS_DETECTED)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         PARM('RUN_ON_MOUNT=NO')
+         DATE(20131020,NOCHECK)
+         REASON('IIC-Dallas - allow HFS mounts but one message')
+ADDREPLACE POLICY STATEMENT(02)
+UPDATE   CHECK(IBMUSS,USS_MAXSOCKETS_MAXFILEPROC)
+         SEVERITY(LOW)
+         INTERVAL(24:00)
+         PARM('MAXSOCKETS=30000,MAXFILEPROC=10000')
+         DATE(20130107,NOCHECK)
+         REASON('IIC-Dallas - settings')
+ADDREPLACE POLICY STATEMENT(03)
+UPDATE   CHECK(IBMCS,CSVTAM_VIT_OPT_PSSSMS)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130107,NOCHECK)
+         REASON('IIC-Dallas - set to NOTRACE')
+ADDREPLACE POLICY STATEMENT(04)
+UPDATE   CHECK(IBMRACF,RACF_TAPEVOL_ACTIVE)
+         SEVERITY(MED)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - do not check TAPEVOL for active')
+ADDREPLACE POLICY STATEMENT(05)
+UPDATE   CHECK(IBMRACF,RACF_TEMPDSN_ACTIVE)
+         SEVERITY(MED)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - do not check TEMPDSN for active')
+ADDREPLACE POLICY STATEMENT(06)
+UPDATE   CHECK(IBMRACF,RACF_IBMUSER_REVOKED)
+         SEVERITY(MED)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - do not check for IBMUSER revoked')
+ADDREPLACE POLICY STATEMENT(07)
+UPDATE   CHECK(IBMRACF,RACF_SENSITIVE_RESOURCES)
+         SEVERITY(HI)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - do not check for sensitive resources')
+ADDREPLACE POLICY STATEMENT(08)
+UPDATE   CHECK(IBMTSOE,TSOE_USERLOGS)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - not using TSOE User Logs')
+ADDREPLACE POLICY STATEMENT(09)
+UPDATE   CHECK(IBMCNZ,CNZ_SYSCONS_PD_MODE)
+         SEVERITY(MED)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - allow VARY CN,ACTIVATE')
+ADDREPLACE POLICY STATEMENT(10)
+UPDATE   CHECK(IBMCNZ,CNZ_CONSOLE_ROUTCODE_11)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - allow ROUTCODE=ALL')
+ADDREPLACE POLICY STATEMENT(11)
+UPDATE   CHECK(IBMCNZ,CNZ_CONSOLE_MSCOPE_AND_ROUTCODE)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - allow ROUTCODE=ALL')
+ADDREPLACE POLICY STATEMENT(12)
+UPDATE   CHECK(IBMCSV,CSV_LNKLST_SPACE)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130108,NOCHECK)
+         REASON('IIC-Dallas - allow LNKLST extents')
+ADDREPLACE POLICY STATEMENT(13)
+UPDATE   CHECK(IBMPDSE,PDSE_SMSPDSE1)
+         SEVERITY(LOW)
+         INACTIVE
+         DATE(20130207,NOCHECK)
+         REASON('IIC-Dallas - default PDSE1 setting')
+ADDREPLACE POLICY STATEMENT(14)
+UPDATE   CHECK(IBMGRS,GRS_GRSQ_SETTING)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130207,NOCHECK)
+         REASON('IIC-Dallas - Default GRSQ setting')
+ADDREPLACE POLICY STATEMENT(15)
+UPDATE   CHECK(IBMGRS,GRS_MODE)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130207,NOCHECK)
+         REASON('IIC-Dallas - GRS in RING mode')
+ADDREPLACE POLICY STATEMENT(16)
+UPDATE   CHECK(IBMCATALOG,CATALOG_RNLS)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20130207,NOCHECK)
+         REASON('IIC-Dallas - CATALOGs can reside on same vol')
+ADDREPLACE POLICY STATEMENT(17)
+UPDATE   CHECK(IBMXCF,XCF_CF_STR_AVAILABILITY)
+         SEVERITY(MED)
+         INTERVAL(004:00)
+         INACTIVE
+         DATE(20130208,NOCHECK)
+         REASON('IIC-Dallas - No CF defined unless requested')
+ADDREPLACE POLICY STATEMENT(18)
+UPDATE   CHECK(IBMXCF,XCF_CFRM_MSGBASED)
+         SEVERITY(MED)
+         INTERVAL(004:00)
+         DATE(20130208,NOCHECK)
+         PARM(MSGBASED)
+         INACTIVE
+         REASON('IIC-Dallas - No CF defined unless requested')
+ADDREPLACE POLICY STATEMENT(19)
+UPDATE   CHECK(IBMXCF,XCF_CDS_SPOF)
+         SEVERITY(HIGH)
+         INTERVAL(001:00)
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - Testing env does not req sep paths')
+ADDREPLACE POLICY STATEMENT(20)
+UPDATE   CHECK(IBMXCF,XCF_CDS_SEPARATION)
+         SEVERITY(HI)
+         INTERVAL(001:00)
+         PARM('LOGR(NO)')
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - Testing env does not req sep CDS')
+ADDREPLACE POLICY STATEMENT(21)
+UPDATE   CHECK(IBMXCF,XCF_SFM_ACTIVE)
+         SEVERITY(MED)
+         INTERVAL(004:00)
+         PARM(ACTIVE)
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - Testing env does not req SFM')
+ADDREPLACE POLICY STATEMENT(22)
+UPDATE   CHECK(IBMXCF,XCF_CF_SYSPLEX_CONNECTIVITY)
+         SEVERITY(MED)
+         INTERVAL(001:00)
+         PARM('MINCFS(2)')
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - No CF defined unless requested')
+ADDREPLACE POLICY STATEMENT(23)
+UPDATE   CHECK(IBMSVA,SVA_AUTOIPL_DEFINED)
+         SEVERITY(MED)
+         INTERVAL(24:00)
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - No Auto SVA policy in test env')
+ADDREPLACE POLICY STATEMENT(24)
+UPDATE   CHECK(IBMDAE,DAE_SHAREDSN)
+         SEVERITY(MED)
+         INTERVAL(24:00)
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - we use default in SYS1.PARMLIB')
+ADDREPLACE POLICY STATEMENT(25)
+UPDATE   CHECK(IBMASM,ASM_PLPA_COMMON_SIZE),
+         INTERVAL(ONETIME),
+         PARM('THRESHOLD(100%)'),
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - keep as small as reasonable')
+ADDREPLACE POLICY STATEMENT(26)
+UPDATE   CHECK(IBMRSM,RSM_REAL),
+         INTERVAL(ONETIME),
+         SEVERITY(LOW),
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - V=R is defined')
+ADDREPLACE POLICY STATEMENT(27)
+UPDATE   CHECK(IBMSMS,SMS_CDS_SEPARATE_VOLUMES)
+         SEVERITY(MED)
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - no separation in test env')
+ADDREPLACE POLICY STATEMENT(28)
+UPDATE   CHECK(IBMASM,ASM_LOCAL_SLOT_USAGE)
+         INTERVAL(24:00)
+         SEVERITY(MED)
+         PARM('THRESHOLD(80%)')
+         DATE(20131031,NOCHECK)
+         REASON('IIC-Dallas - 80% ASM slot messages once per day')
+ADDREPLACE POLICY STATEMENT(29)
+UPDATE   CHECK(IBMXCF,XCF_SIG_PATH_SEPARATION)
+         SEVERITY(MED)
+         DATE(20140203,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - no separate paths in test env')
+ADDREPLACE POLICY STATEMENT(30)
+UPDATE   CHECK(IBMUSS,USS_PARMLIB)
+         INTERVAL(24:00)
+         SEVERITY(LOW)
+         DATE(20140203,NOCHECK)
+         REASON('IIC-Dallas - USS Parmlib messages once per day')
+ADDREPLACE POLICY STATEMENT(31)
+UPDATE   CHECK(IBMCATALOG,CATALOG_ATTRIBUTE_CHECK)
+         INTERVAL(24:00)
+         SEVERITY(LOW)
+         DATE(20151021,NOCHECK)
+         INACTIVE
+         REASON('IIC-Dallas - Shared check for R/O VM vols fail')
+ADDREPLACE POLICY STATEMENT(32)
+UPDATE   CHECK(IBMRACF,RACF_ENCRYPTION_ALGORITHM)
+         INTERVAL(24:00)
+         SEVERITY(LOW)
+         DATE(20151022,NOCHECK)
+         REASON('IIC-Dallas - KDFAES check once per day')
+ADDREPLACE POLICY STATEMENT(33)
+UPDATE   CHECK(IBMRACF,RACF_PASSWORD_CONTROLS)
+         INTERVAL(24:00)
+         SEVERITY(LOW)
+         DATE(20151022,NOCHECK)
+         REASON('IIC-Dallas - PASSWORD controls check once per day')
+ADDREPLACE POLICY STATEMENT(34)
+UPDATE   CHECK(IBMCS,CSVTAM_VIT_OPT_STDOPTS)
+         SEVERITY(LOW)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20161010,NOCHECK)
+         REASON('IIC-Dallas - VIT option inactive - CPU avoidance')
+ADDREPLACE POLICY STATEMENT(35)
+UPDATE   CHECK(IBMJES,JES_NJE_SECURITY)
+         SEVERITY(MED)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20171017,NOCHECK)
+         REASON('IIC-Dallas - do not check for NJE nodes')
+ADDREPLACE POLICY STATEMENT(36)
+UPDATE   CHECK(IBMRACF,RACF_AUDIT_CONTROLS)
+         SEVERITY(MED)
+         INTERVAL(ONETIME)
+         INACTIVE
+         DATE(20171017,NOCHECK)
+         REASON('IIC-Dallas - no RACF audit controls')
+ADDREPLACE POLICY STATEMENT(COLIN3)
+UPDATE   CHECK(IBMASM,ASM_NUMBER_LOCAL_DATASETS)
+         SEVERITY(MED)
+         DATE(20130208,NOCHECK)
+         INACTIVE
+         REASON('ADCD - Test/Development env')

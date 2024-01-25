@@ -1,0 +1,62 @@
+INIT     CMDDELIM(")
+         MLIM(1500)
+         MONITOR(DSNAME)
+         MPF(00)
+         PFK(00)
+         RLIM(10)
+         UEXIT(N)
+         CNGRP(00)
+         AMRF(N)
+DEFAULT ROUTCODE(ALL)
+CONSOLE
+  DEVNUM(700)
+  AUTH(MASTER)
+  CON(N)
+  DEL(R)
+  MFORM(J,T)
+  MONITOR(JOBNAMES-T)
+  NAME(L700)
+  PFKTAB(PFKTAB1)
+  RNUM(19)
+  ROUTCODE(ALL)
+  RTME(1)
+  SEG(14)
+  UNIT(3270-X)
+CONSOLE
+  DEVNUM(908)
+  AUTH(MASTER)
+  CON(N)
+  DEL(R)
+  MFORM(J,T)
+  MONITOR(JOBNAMES-T)
+  NAME(C908)
+  PFKTAB(PFKTAB1)
+  RNUM(19)
+  ROUTCODE(ALL)
+  RTME(1)
+  SEG(14)
+  UNIT(3270-X)
+CONSOLE   DEVNUM(SYSCONS) LEVEL(ALL)
+       NAME(HWCI) AUTH(MASTER) ROUTCODE(ALL)
+CONSOLE
+  DEVNUM(SUBSYSTEM)
+  NAME(SUBS)
+  AUTH(ALL)
+CONSOLE
+  DEVNUM(SUBSYSTEM)
+  AUTH(ALL)
+  NAME(S908)
+HARDCOPY
+  DEVNUM(SYSLOG)
+  CMDLEVEL(CMDS)
+  ROUTCODE(ALL)
+/********************************************************************/
+/*                                                                  */
+/* END OF CONSOLE DEFINITIONS                                       */
+/*                                                                  */
+/********************************************************************/
+/********************************************************************/
+/*                                                                  */
+/* END OF CONSOLE DEFINITIONS                                       */
+/*                                                                  */
+/********************************************************************/
