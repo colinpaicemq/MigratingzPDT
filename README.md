@@ -33,7 +33,7 @@ CONSOL00
 - PROGMF  
 - SCHEDMF for MFA
 - SCHED00 add NOSYST for TCPIP because there are now more than one program in the job.
-- SHUTCP My tailord shutdown commands- 
+- SHUTCP My tailored shutdown commands- 
 - VTAM00 - commands executed as part of IPL.  K A,NONE,L=L700 to make screen rollable by default, and $T CKPTDEF,OPVERIFY=NO fora health check     
 
 
@@ -43,7 +43,8 @@ CONSOL00
 - EXPCERT.JCL -  invokes lring rexx to generate the commands to export the certificate is the specified user's keyring 
 - CERTIMP.JCL - run this on the newer system to imprort ther certificates and create the keyring
 - LRING.rexx - rexx processing that issuse the RACDCERT command to list a users keyring and process the results/  
--   
+- DELOCERT.SYSIN - RACDCERT DELETE  statements for expired certificates owned by CERTAUTH - as reported by health checker
+  
 
 
 
